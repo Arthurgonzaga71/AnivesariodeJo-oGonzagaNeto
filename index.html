@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>60 Anos | João Gonzaga Neto</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#001f3f",
+                        "surface-container": "#efefe0",
+                        "surface-bright": "#fafaeb",
+                        "on-secondary": "#ffffff",
+                        "background": "#fafaeb",
+                        "secondary": "#735c00",
+                        "outline": "#74777f",
+                        "on-primary-fixed": "#001c3a",
+                        "on-tertiary-container": "#788898",
+                        "primary": "#000613",
+                        "inverse-primary": "#afc8f0",
+                        "surface-variant": "#e3e3d5",
+                        "surface-dim": "#dbdbcd",
+                        "tertiary-fixed-dim": "#b8c8da",
+                        "tertiary-fixed": "#d4e4f6",
+                        "surface-container-highest": "#e3e3d5",
+                        "surface": "#fafaeb",
+                        "surface-container-high": "#e9e9db",
+                        "inverse-surface": "#2f3128",
+                        "on-primary-container": "#6f88ad",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#afc8f0",
+                        "on-secondary-fixed-variant": "#574500",
+                        "primary-fixed": "#d4e3ff",
+                        "on-tertiary-fixed-variant": "#394857",
+                        "secondary-container": "#fed65b",
+                        "inverse-on-surface": "#f1f2e3",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#e9c349",
+                        "tertiary": "#00060e",
+                        "tertiary-container": "#10202d",
+                        "on-tertiary-fixed": "#0d1d2a",
+                        "on-secondary-container": "#745c00",
+                        "secondary-fixed": "#ffe088",
+                        "on-surface-variant": "#43474e",
+                        "on-background": "#1b1c14",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "surface-tint": "#476083",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c4c6cf",
+                        "on-surface": "#1b1c14",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f4f5e6",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#241a00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "section-gap-desktop": "120px",
+                        "section-gap-mobile": "64px",
+                        "container-max-width": "1140px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "button": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "label-caps": ["Montserrat"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "button": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ESTILOS DO CARROSSEL */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            cursor: grab;
+        }
+        
+        .carousel-track:active {
+            cursor: grabbing;
+        }
+        
+        .carousel-slide {
+            flex: 0 0 100%;
+            aspect-ratio: 3 / 4;
+            position: relative;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-caption {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 31, 63, 0.9);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
+        }
+        
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 31, 63, 0.7);
+            backdrop-filter: blur(4px);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(115, 92, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-btn.prev {
+            left: 10px;
+        }
+        
+        .carousel-btn.next {
+            right: 10px;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #c4c6cf;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-dot.active {
+            width: 24px;
+            border-radius: 10px;
+            background: #735c00;
+        }
+        
+        /* Responsivo para celular */
+        @media (max-width: 640px) {
+            .carousel-container {
+                max-width: 320px;
+            }
+            
+            .carousel-btn {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .carousel-caption {
+                bottom: 12px;
+                right: 12px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+        
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #001f3f;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 0.5rem;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: Montserrat;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .toast.show {
+            visibility: visible;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; bottom: 0; }
+            15% { opacity: 1; bottom: 30px; }
+            85% { opacity: 1; bottom: 30px; }
+            100% { opacity: 0; bottom: 0; }
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<div id="toast" class="toast"></div>
+
+<header class="sticky top-0 w-full z-50 flex justify-between items-center h-20 px-gutter max-w-[1140px] mx-auto bg-surface/90 backdrop-blur-md border-b-[0.5px] border-primary-container/10 shadow-[0px_10px_30px_rgba(0,31,63,0.05)]">
+<div class="font-headline-sm text-headline-sm text-secondary italic">João Gonzaga Neto</div>
+<nav class="hidden md:flex gap-8">
+<a class="font-label-caps text-label-caps text-secondary border-b-2 border-secondary pb-1 transition-all" href="#inicio">Início</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#evento">Evento</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#localizacao">Localização</a>
+</nav>
+<a class="bg-primary-container text-on-primary font-button text-button px-6 py-3 hover:bg-secondary transition-all active:scale-95" href="#rsvp">Confirmar Presença</a>
+</header>
+<main>
+<section class="min-h-screen flex flex-col items-center justify-center pt-20 px-gutter relative overflow-hidden" id="inicio">
+<div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+<div class="grid grid-cols-12 h-full w-full">
+<div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="border-r border-primary-container h-full"></div><div class="h-full"></div>
+</div>
+</div>
+<div class="max-w-[1140px] w-full grid md:grid-cols-2 gap-12 items-center">
+<div class="reveal active flex flex-col gap-6 order-2 md:order-1">
+<span class="font-label-caps text-label-caps text-secondary tracking-[0.3em]">CONVITE ESPECIAL</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary-container leading-none">
+                        60 Anos<br/>
+<span class="italic font-normal">João Gonzaga Neto</span>
+</h1>
+<div class="w-20 h-px bg-secondary mt-4"></div>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                        Uma trajetória de integridade, conquistas e amizades. Celebre conosco este marco inesquecível em uma tarde de pura sofisticação.
+                    </p>
+<a class="inline-flex items-center gap-2 font-button text-button text-secondary group" href="#rsvp">
+                        CONFIRMAR PRESENÇA 
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<div class="reveal active order-1 md:order-2 flex justify-center">
+<div class="relative w-full max-w-sm aspect-[3/4] overflow-hidden shadow-[20px_20px_60px_rgba(0,31,63,0.15)] ring-1 ring-secondary/20">
+<img alt="João Gonzaga Neto" class="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000" src="Primeira.jpeg" onerror="this.src='https://via.placeholder.com/400x500?text=Foto+Principal'"/>
+<div class="absolute inset-0 border-[12px] border-surface shadow-inner pointer-events-none"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SEÇÃO DO CARROSSEL -->
+<section class="py-section-gap-mobile md:py-section-gap-desktop bg-surface-container-low overflow-hidden">
+<div class="max-w-[1140px] mx-auto px-gutter text-center mb-16 reveal">
+<h2 class="font-headline-md text-headline-md text-primary-container">Memórias de uma Jornada</h2>
+<div class="flex items-center justify-center gap-4 mt-4">
+<div class="w-12 h-[0.5px] bg-primary-container"></div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">diamond</span>
+<div class="w-12 h-[0.5px] bg-primary-container"></div>
+</div>
+</div>
+
+<div class="carousel-container reveal">
+    <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide">
+            <img src="CARROSEL 1.jpeg" alt="João 1" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+1'">
+            <div class="carousel-caption">
+                <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO I</span>
+                <div class="font-headline-sm italic">60 Anos</div>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="CARROSEL 2.jpeg" alt="João 2" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+2'">
+            <div class="carousel-caption">
+                <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO II</span>
+                <div class="font-headline-sm italic">Trajetória</div>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="CARROSSEL 3.jpeg" alt="João 3" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+3'">
+            <div class="carousel-caption">
+                <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO III</span>
+                <div class="font-headline-sm italic">Legado</div>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="CARROSEL 4.jpeg" alt="João 4" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+4'">
+            <div class="carousel-caption">
+                <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO IV</span>
+                <div class="font-headline-sm italic">Celebração</div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="carousel-btn prev" id="prevBtn">
+        <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+    <button class="carousel-btn next" id="nextBtn">
+        <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+</div>
+
+<div class="carousel-dots" id="carouselDots"></div>
+
+<p class="text-center mt-8 font-label-caps text-on-surface-variant opacity-60 reveal">DESLIZE OU CLIQUE NAS SETAS PARA NAVEGAR</p>
+</section>
+
+<section class="py-section-gap-mobile md:py-section-gap-desktop bg-surface px-gutter overflow-hidden" id="evento">
+<div class="max-w-[1140px] mx-auto grid md:grid-cols-12 gap-12 items-center">
+<div class="md:col-span-5 reveal">
+<div class="relative aspect-[3/4] shadow-[40px_40px_80px_rgba(0,31,63,0.1)] ring-1 ring-secondary/10">
+<img alt="João Gonzaga Neto" class="w-full h-full object-cover" src="locofc.jpeg" onerror="this.src='https://via.placeholder.com/400x500?text=Foto+Evento'"/>
+</div>
+</div>
+<div class="md:col-span-7 flex flex-col gap-10 reveal">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary-container">O Evento</h2>
+<p class="font-body-lg text-body-lg text-secondary italic mt-2 font-semibold">Venha participar dessa comemoração SURPRESA.</p>
+</div>
+<div class="grid sm:grid-cols-2 gap-8">
+<div class="flex gap-4 items-start p-6 bg-surface-container-low border-t-2 border-secondary shadow-sm">
+<span class="material-symbols-outlined text-secondary text-3xl">calendar_today</span>
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant">DATA</h4>
+<p class="font-headline-sm text-primary-container">17 Out 2026</p>
+</div>
+</div>
+<div class="flex gap-4 items-start p-6 bg-surface-container-low border-t-2 border-secondary shadow-sm">
+<span class="material-symbols-outlined text-secondary text-3xl">schedule</span>
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant">HORÁRIO</h4>
+<p class="font-headline-sm text-primary-container">12:00 Horas</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4" id="localizacao">
+<div class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-secondary text-3xl">location_on</span>
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant">LOCAL</h4>
+<p class="font-body-lg text-primary-container">Rua Leonardo R Da Silva, 397, casa 2,<br/>Pitangueiras, Lauro de Freitas - BA</p>
+</div>
+</div>
+<div class="w-full h-64 rounded-lg overflow-hidden shadow-md">
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.5!2d-38.3065727!3d-12.879364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7163e05f181049b%3A0x45f72d2805b3a63f!2sRua%20Leonardo%20Rodrigues%20da%20Silva%2C%20397%20-%20casa%202%20-%20Pitangueiras%2C%20Lauro%20de%20Freitas%20-%20BA%2C%2042701-420!5e0!3m2!1spt-BR!2sbr!4v1!5m2!1spt-BR!2sbr" 
+        width="100%" 
+        height="100%" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="py-section-gap-mobile md:py-section-gap-desktop bg-surface-container-low px-gutter flex justify-center overflow-hidden">
+<div class="max-w-[1140px] w-full flex flex-col items-center gap-12 reveal">
+<div class="relative w-full max-w-xs aspect-[3/4] shadow-[30px_30px_60px_rgba(0,31,63,0.1)] ring-1 ring-secondary/20">
+<img alt="João Gonzaga Neto" class="w-full h-full object-cover" src="CONVITE.jpeg" onerror="this.src='https://via.placeholder.com/400x500?text=Convite'"/>
+<div class="absolute inset-0 border-[8px] border-surface pointer-events-none"></div>
+</div>
+<div class="text-center flex flex-col items-center gap-8">
+<span class="material-symbols-outlined text-secondary text-5xl" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+<h3 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary-container leading-tight italic max-w-3xl">
+                "Você não sabe o quanto eu caminhei para chegar até aqui."
+            </h3>
+<div class="w-24 h-px bg-secondary"></div>
+<p class="font-headline-sm text-on-surface-variant font-medium">Venha brindar e comemorar essa data tão importante. Confirme a sua presença.</p>
+<a class="bg-primary-container text-on-primary px-10 py-5 font-button text-button shadow-xl hover:bg-secondary transition-all active:scale-95" href="#rsvp">
+                CONFIRME SUA PRESENÇA AGORA
+            </a>
+</div>
+</div>
+</section>
+
+<section class="py-section-gap-mobile md:py-section-gap-desktop bg-surface-container flex justify-center px-gutter" id="rsvp">
+<div class="max-w-4xl w-full bg-surface shadow-[0px_40px_100px_rgba(0,31,63,0.1)] p-8 md:p-16 border-t-[6px] border-secondary reveal">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-md text-primary-container">Confirme sua Presença</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Por favor, confirme até o dia 15 de Outubro.</p>
+</div>
+<form class="grid gap-8" id="rsvpForm">
+<div class="grid md:grid-cols-2 gap-8">
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">NOME COMPLETO *</label>
+<input class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="Como deseja ser identificado" type="text" id="nome" name="nome" minlength="2" maxlength="120" required/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">TELEFONE PARA CONTATO *</label>
+<input class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="(00) 00000-0000" type="tel" id="telefone" name="telefone" minlength="8" maxlength="30" required/>
+<span class="text-[10px] text-on-surface-variant/60">Usaremos apenas para confirmação</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">MENSAGEM AO ANIVERSARIANTE (OPCIONAL)</label>
+<textarea class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="Deixe seu carinho aqui..." rows="3" id="mensagem" name="mensagem" maxlength="500"></textarea>
+</div>
+<button class="bg-primary-container text-on-primary py-5 font-button text-button mt-4 hover:bg-secondary transition-all tracking-widest active:scale-95" type="submit" id="submitBtn">
+                        ENVIAR CONFIRMAÇÃO
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<footer class="w-full py-12 px-gutter flex flex-col items-center gap-6 max-w-[1140px] mx-auto bg-surface-container-low border-t-[0.5px] border-primary-container/20">
+<div class="font-headline-sm text-headline-sm text-secondary">João Gonzaga Neto</div>
+<nav class="flex gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary underline underline-offset-4 transition-all" href="#inicio">Início</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary underline underline-offset-4 transition-all" href="#evento">Evento</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary underline underline-offset-4 transition-all" href="#localizacao">Localização</a>
+</nav>
+<p class="font-body-md text-body-md text-on-surface-variant/60 text-center">
+            © 2026 Celebração 60 Anos. João Gonzaga Neto.
+        </p>
+<button class="mt-4 flex flex-col items-center gap-1 group opacity-60 hover:opacity-100 transition-opacity" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+<span class="material-symbols-outlined text-secondary">expand_less</span>
+<span class="font-label-caps text-[10px]">VOLTAR AO TOPO</span>
+</button>
+</footer>
+
+<script>
+        // Navegacao interna sem alterar a URL. Isso tambem funciona em previews
+        // do editor que bloqueiam navegacao entre URLs locais (file://).
+        document.querySelectorAll('a[href^="#"]').forEach((link) => {
+            link.addEventListener('click', (event) => {
+                const targetId = link.getAttribute('href');
+                const target = targetId && document.querySelector(targetId);
+
+                if (!target) return;
+
+                event.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Navigation Highlight Logic
+        window.addEventListener('scroll', () => {
+            const sections = ['inicio', 'evento', 'localizacao'];
+            let current = 'inicio';
+            
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const top = element.offsetTop - 100;
+                    if (window.scrollY >= top) {
+                        current = section;
+                    }
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(a => {
+                a.classList.remove('text-secondary', 'border-b-2', 'border-secondary', 'pb-1');
+                a.classList.add('text-on-surface-variant');
+                if (a.getAttribute('href').substring(1) === current) {
+                    a.classList.remove('text-on-surface-variant');
+                    a.classList.add('text-secondary', 'border-b-2', 'border-secondary', 'pb-1');
+                }
+            });
+        });
+
+        // ============================================
+        // CARROSSEL
+        // ============================================
+        const track = document.getElementById('carouselTrack');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('carouselDots');
+        
+        let currentIndex = 0;
+        let startX = 0;
+        let isDragging = false;
+        
+        const totalSlides = slides.length;
+        
+        // Criar dots
+        function createDots() {
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('carousel-dot');
+                if (i === currentIndex) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+        
+        function updateDots() {
+            const dots = document.querySelectorAll('.carousel-dot');
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+            currentIndex = index;
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateDots();
+        }
+        
+        function nextSlide() {
+            if (currentIndex < totalSlides - 1) {
+                currentIndex++;
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                updateDots();
+            }
+        }
+        
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                updateDots();
+            }
+        }
+        
+        // Eventos de toque para celular
+        function handleTouchStart(e) {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        }
+        
+        function handleTouchMove(e) {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            const diff = startX - currentX;
+            
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+                isDragging = false;
+            }
+        }
+        
+        function handleTouchEnd() {
+            isDragging = false;
+        }
+        
+        // Eventos de clique nos botões
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        
+        // Eventos de toque
+        track.addEventListener('touchstart', handleTouchStart);
+        track.addEventListener('touchmove', handleTouchMove);
+        track.addEventListener('touchend', handleTouchEnd);
+        
+        // Inicializar carrossel
+        createDots();
+        
+        // ============================================
+        // FORMULÁRIO - INTEGRADO COM BOT + PLANILHA
+        // ============================================
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.backgroundColor = isError ? '#ba1a1a' : '#001f3f';
+            toast.className = 'toast show';
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+        // URLs
+        // Preencha com Project URL e Publishable key em:
+        // Supabase > Project Settings > API.
+        // Nunca coloque a Secret key ou a senha do banco neste arquivo.
+        const SUPABASE_URL = 'https://ckblikqmyxqescfzigug.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_A8TJsrHtmp5zDZmSe8qaBg_05yBsFji';
+
+        const supabaseConfigurado =
+            SUPABASE_URL.startsWith('https://') &&
+            !SUPABASE_URL.includes('COLE_AQUI') &&
+            !SUPABASE_PUBLISHABLE_KEY.includes('COLE_AQUI');
+
+        const supabaseClient = supabaseConfigurado
+            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+            : null;
+
+        async function enviarConfirmacao(dados) {
+            if (!supabaseClient) {
+                return { success: false, configurationError: true };
+            }
+
+            const { error } = await supabaseClient
+                .from('confirmacoes')
+                .insert({
+                    nome: dados.nome,
+                    telefone: dados.telefone,
+                    mensagem: dados.mensagem
+                });
+
+            if (error) {
+                console.error('Erro ao salvar confirmacao:', error.message);
+                return { success: false };
+            }
+
+            return { success: true };
+
+            /* Integracao antiga desativada durante a migracao.
+            let botOk = false;
+            let planilhaOk = false;
+            
+            // Enviar para o Bot do Telegram (SEM no-cors)
+            try {
+                const response = await fetch(URL_BOT, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
+                
+                const resultado = await response.json();
+                if (resultado.success) {
+                    botOk = true;
+                    console.log('✅ Bot notificado:', resultado);
+                } else {
+                    console.log('⚠️ Bot retornou erro:', resultado);
+                }
+            } catch (error) {
+                console.error('❌ Erro no bot:', error);
+            }
+            
+            // Enviar para a planilha (Apps Script) - mantém no-cors
+            try {
+                await fetch(URL_PLANILHA, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+                planilhaOk = true;
+                console.log('✅ Planilha atualizada');
+            } catch (error) {
+                console.error('❌ Erro na planilha:', error);
+            }
+            
+            return { success: botOk || planilhaOk, bot: botOk, planilha: planilhaOk };
+            */
+        }
+
+        // Formulário
+        document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nome').value.trim();
+            const telefone = document.getElementById('telefone').value.trim();
+            const mensagem = document.getElementById('mensagem').value.trim();
+            
+            if (!nome) {
+                showToast('Por favor, informe seu nome completo.', true);
+                document.getElementById('nome').focus();
+                return;
+            }
+            
+            if (!telefone) {
+                showToast('Por favor, informe seu telefone para contato.', true);
+                document.getElementById('telefone').focus();
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading"></span> ENVIANDO...';
+            submitBtn.disabled = true;
+            
+            const dados = { nome, telefone, mensagem: mensagem || '' };
+            
+            const resultado = await enviarConfirmacao(dados);
+            
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            if (!resultado.success && resultado.configurationError) {
+                showToast('Supabase ainda nao foi configurado no site.', true);
+                return;
+            }
+
+            if (resultado.success) {
+                let msg = '✅ Confirmação enviada com sucesso!';
+                showToast(msg);
+                document.getElementById('rsvpForm').reset();
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1500);
+            } else {
+                showToast('❌ Erro ao enviar. Tente novamente.', true);
+            }
+        });
+    </script>
+</body>
+</html>
