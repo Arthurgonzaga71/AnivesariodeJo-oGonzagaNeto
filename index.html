@@ -275,10 +275,20 @@
             opacity: 0.7;
             cursor: not-allowed;
         }
+        .confirmation-success { display: none; }
+        .confirmation-success.show { display: flex; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md overflow-x-hidden">
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <header class="sticky top-0 w-full z-50 flex justify-between items-center h-20 px-gutter max-w-[1140px] mx-auto bg-surface/90 backdrop-blur-md border-b-[0.5px] border-primary-container/10 shadow-[0px_10px_30px_rgba(0,31,63,0.05)]">
 <div class="font-headline-sm text-headline-sm text-secondary italic">João Gonzaga Neto</div>
@@ -287,8 +297,17 @@
 <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#evento">Evento</a>
 <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#localizacao">Localização</a>
 </nav>
-<a class="bg-primary-container text-on-primary font-button text-button px-6 py-3 hover:bg-secondary transition-all active:scale-95" href="#rsvp">Confirmar Presença</a>
+<button class="md:hidden w-11 h-11 inline-flex items-center justify-center text-primary-container" id="mobileMenuButton" type="button" aria-label="Abrir menu" aria-controls="mobileMenu" aria-expanded="false"><span class="material-symbols-outlined">menu</span></button>
+<a class="hidden md:inline-flex bg-primary-container text-on-primary font-button text-button px-6 py-3 hover:bg-secondary transition-all active:scale-95" href="#rsvp">Confirmar Presença</a>
 </header>
+<nav class="hidden md:hidden sticky top-20 z-40 bg-surface shadow-lg border-b border-outline-variant px-gutter py-4" id="mobileMenu" aria-label="Navegação móvel">
+<div class="flex flex-col gap-1">
+<a class="px-4 py-3 font-button text-primary-container" href="#inicio">Início</a>
+<a class="px-4 py-3 font-button text-primary-container" href="#evento">Evento</a>
+<a class="px-4 py-3 font-button text-primary-container" href="#localizacao">Localização</a>
+<a class="mt-2 bg-primary-container text-on-primary px-4 py-4 text-center font-button" href="#rsvp">Confirmar presença</a>
+</div>
+</nav>
 <main>
 <section class="min-h-screen flex flex-col items-center justify-center pt-20 px-gutter relative overflow-hidden" id="inicio">
 <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
@@ -332,31 +351,31 @@
 </div>
 </div>
 
-<div class="carousel-container reveal">
-    <div class="carousel-track" id="carouselTrack">
+<div class="carousel-container reveal" role="region" aria-roledescription="carrossel" aria-label="Fotos de João Gonzaga Neto" tabindex="0" id="carousel">
+    <div class="carousel-track" id="carouselTrack" aria-live="polite">
         <div class="carousel-slide">
-            <img src="CARROSEL 1.jpeg" alt="João 1" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+1'">
+            <img src="CARROSEL 1.jpeg" alt="João Gonzaga Neto — capítulo 1" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+1'">
             <div class="carousel-caption">
                 <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO I</span>
                 <div class="font-headline-sm italic">60 Anos</div>
             </div>
         </div>
         <div class="carousel-slide">
-            <img src="CARROSEL 2.jpeg" alt="João 2" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+2'">
+            <img src="CARROSEL 2.jpeg" alt="João Gonzaga Neto — capítulo 2" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+2'">
             <div class="carousel-caption">
                 <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO II</span>
                 <div class="font-headline-sm italic">Trajetória</div>
             </div>
         </div>
         <div class="carousel-slide">
-            <img src="CARROSSEL 3.jpeg" alt="João 3" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+3'">
+            <img src="CARROSSEL 3.jpeg" alt="João Gonzaga Neto — capítulo 3" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+3'">
             <div class="carousel-caption">
                 <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO III</span>
                 <div class="font-headline-sm italic">Legado</div>
             </div>
         </div>
         <div class="carousel-slide">
-            <img src="CARROSEL 4.jpeg" alt="João 4" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+4'">
+            <img src="CARROSEL 4.jpeg" alt="João Gonzaga Neto — capítulo 4" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/400x500?text=Imagem+4'">
             <div class="carousel-caption">
                 <span class="font-label-caps text-[10px] tracking-widest opacity-70">CAPÍTULO IV</span>
                 <div class="font-headline-sm italic">Celebração</div>
@@ -364,10 +383,10 @@
         </div>
     </div>
     
-    <button class="carousel-btn prev" id="prevBtn">
+    <button class="carousel-btn prev" id="prevBtn" type="button" aria-label="Foto anterior">
         <span class="material-symbols-outlined">chevron_left</span>
     </button>
-    <button class="carousel-btn next" id="nextBtn">
+    <button class="carousel-btn next" id="nextBtn" type="button" aria-label="Próxima foto">
         <span class="material-symbols-outlined">chevron_right</span>
     </button>
 </div>
@@ -401,7 +420,7 @@
 <span class="material-symbols-outlined text-secondary text-3xl">schedule</span>
 <div>
 <h4 class="font-label-caps text-label-caps text-on-surface-variant">HORÁRIO</h4>
-<p class="font-headline-sm text-primary-container">12:00 Horas</p>
+<p class="font-headline-sm text-primary-container">12h</p>
 </div>
 </div>
 </div>
@@ -421,8 +440,13 @@
         style="border:0;" 
         allowfullscreen="" 
         loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Mapa do local da celebração">
     </iframe>
+</div>
+<div class="grid sm:grid-cols-2 gap-3">
+<a class="inline-flex items-center justify-center gap-2 bg-primary-container text-white px-5 py-4 font-button hover:bg-secondary transition-colors" href="https://www.google.com/maps/search/?api=1&amp;query=Rua%20Leonardo%20Rodrigues%20da%20Silva%2C%20397%2C%20casa%202%2C%20Pitangueiras%2C%20Lauro%20de%20Freitas%20-%20BA" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined" aria-hidden="true">directions</span>Abrir no mapa</a>
+<button class="inline-flex items-center justify-center gap-2 border border-primary-container text-primary-container px-5 py-4 font-button hover:bg-primary-container hover:text-white transition-colors" type="button" id="calendarButton"><span class="material-symbols-outlined" aria-hidden="true">event_available</span>Adicionar ao calendário</button>
 </div>
 </div>
 </div>
@@ -453,28 +477,34 @@
 <div class="max-w-4xl w-full bg-surface shadow-[0px_40px_100px_rgba(0,31,63,0.1)] p-8 md:p-16 border-t-[6px] border-secondary reveal">
 <div class="text-center mb-12">
 <h2 class="font-headline-md text-headline-md text-primary-container">Confirme sua Presença</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2">Por favor, confirme até o dia 15 de Outubro.</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Por favor, confirme até o dia 29/09.</p>
 </div>
 <form class="grid gap-8" id="rsvpForm">
 <div class="grid md:grid-cols-2 gap-8">
 <div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant">NOME COMPLETO *</label>
-<input class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="Como deseja ser identificado" type="text" id="nome" name="nome" minlength="2" maxlength="120" required/>
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="nome">NOME COMPLETO *</label>
+<input class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="Como deseja ser identificado" type="text" id="nome" name="nome" autocomplete="name" minlength="2" maxlength="120" required/>
 </div>
 <div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant">TELEFONE PARA CONTATO *</label>
-<input class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="(00) 00000-0000" type="tel" id="telefone" name="telefone" minlength="8" maxlength="30" required/>
-<span class="text-[10px] text-on-surface-variant/60">Usaremos apenas para confirmação</span>
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="telefone">TELEFONE PARA CONTATO *</label>
+<input class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="(00) 00000-0000" type="tel" id="telefone" name="telefone" autocomplete="tel" inputmode="numeric" aria-describedby="telefoneAjuda" minlength="14" maxlength="15" required/>
+<span class="text-[10px] text-on-surface-variant/60" id="telefoneAjuda">Usaremos apenas para confirmação</span>
 </div>
 </div>
 <div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant">MENSAGEM AO ANIVERSARIANTE (OPCIONAL)</label>
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="mensagem">MENSAGEM AO ANIVERSARIANTE (OPCIONAL)</label>
 <textarea class="bg-surface border-0 border-b border-outline-variant focus:ring-0 focus:border-secondary transition-all font-body-md py-3 px-0 placeholder:opacity-30" placeholder="Deixe seu carinho aqui..." rows="3" id="mensagem" name="mensagem" maxlength="500"></textarea>
 </div>
 <button class="bg-primary-container text-on-primary py-5 font-button text-button mt-4 hover:bg-secondary transition-all tracking-widest active:scale-95" type="submit" id="submitBtn">
                         ENVIAR CONFIRMAÇÃO
                     </button>
 </form>
+<div class="confirmation-success flex-col items-center text-center gap-4 py-8" id="confirmationSuccess" role="status" aria-live="polite" tabindex="-1">
+<span class="material-symbols-outlined text-secondary text-6xl" aria-hidden="true">check_circle</span>
+<h3 class="font-headline-md text-headline-md text-primary-container">Presença confirmada!</h3>
+<p class="font-body-md text-on-surface-variant">Obrigado por confirmar. Esperamos você no dia 17 de outubro, às 12h.</p>
+<button class="font-button text-secondary underline underline-offset-4" type="button" id="newConfirmationButton">Enviar outra confirmação</button>
+</div>
 </div>
 </section>
 </main>
@@ -506,7 +536,39 @@
 
                 event.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('mobileMenu')?.classList.add('hidden');
+                document.getElementById('mobileMenuButton')?.setAttribute('aria-expanded', 'false');
+                document.getElementById('mobileMenuButton')?.setAttribute('aria-label', 'Abrir menu');
+                const menuIcon = document.querySelector('#mobileMenuButton span');
+                if (menuIcon) menuIcon.textContent = 'menu';
             });
+        });
+
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        mobileMenuButton.addEventListener('click', () => {
+            const menu = document.getElementById('mobileMenu');
+            const isOpen = !menu.classList.toggle('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
+            mobileMenuButton.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+            mobileMenuButton.querySelector('span').textContent = isOpen ? 'close' : 'menu';
+        });
+
+        document.getElementById('calendarButton').addEventListener('click', () => {
+            const calendar = [
+                'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//João Gonzaga Neto//60 Anos//PT-BR',
+                'BEGIN:VEVENT', 'UID:joao-60-20261017@example.com',
+                'DTSTART;TZID=America/Bahia:20261017T120000',
+                'DTEND;TZID=America/Bahia:20261017T180000',
+                'SUMMARY:60 anos de João Gonzaga Neto',
+                'LOCATION:Rua Leonardo Rodrigues da Silva\, 397\, casa 2\, Pitangueiras\, Lauro de Freitas - BA',
+                'DESCRIPTION:Celebração surpresa dos 60 anos de João Gonzaga Neto.',
+                'END:VEVENT', 'END:VCALENDAR'
+            ].join('\r\n');
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(new Blob([calendar], { type: 'text/calendar;charset=utf-8' }));
+            link.download = '60-anos-joao-gonzaga.ics';
+            link.click();
+            URL.revokeObjectURL(link.href);
         });
 
         // Scroll Reveal Animation
@@ -568,8 +630,10 @@
         function createDots() {
             dotsContainer.innerHTML = '';
             for (let i = 0; i < totalSlides; i++) {
-                const dot = document.createElement('div');
+                const dot = document.createElement('button');
+                dot.type = 'button';
                 dot.classList.add('carousel-dot');
+                dot.setAttribute('aria-label', `Ir para foto ${i + 1} de ${totalSlides}`);
                 if (i === currentIndex) dot.classList.add('active');
                 dot.addEventListener('click', () => goToSlide(i));
                 dotsContainer.appendChild(dot);
@@ -581,8 +645,10 @@
             dots.forEach((dot, index) => {
                 if (index === currentIndex) {
                     dot.classList.add('active');
+                    dot.setAttribute('aria-current', 'true');
                 } else {
                     dot.classList.remove('active');
+                    dot.removeAttribute('aria-current');
                 }
             });
         }
@@ -639,6 +705,10 @@
         // Eventos de clique nos botões
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
+        document.getElementById('carousel').addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') { event.preventDefault(); prevSlide(); }
+            if (event.key === 'ArrowRight') { event.preventDefault(); nextSlide(); }
+        });
         
         // Eventos de toque
         track.addEventListener('touchstart', handleTouchStart);
@@ -647,6 +717,15 @@
         
         // Inicializar carrossel
         createDots();
+
+        const telefoneInput = document.getElementById('telefone');
+        telefoneInput.addEventListener('input', () => {
+            const digits = telefoneInput.value.replace(/\D/g, '').slice(0, 11);
+            if (digits.length <= 2) telefoneInput.value = digits;
+            else if (digits.length <= 6) telefoneInput.value = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+            else if (digits.length <= 10) telefoneInput.value = `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+            else telefoneInput.value = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+        });
         
         // ============================================
         // FORMULÁRIO - INTEGRADO COM BOT + PLANILHA
@@ -778,15 +857,22 @@
             }
 
             if (resultado.success) {
-                let msg = '✅ Confirmação enviada com sucesso!';
-                showToast(msg);
-                document.getElementById('rsvpForm').reset();
-                setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }, 1500);
+                showToast('✅ Confirmação enviada com sucesso!');
+                const form = document.getElementById('rsvpForm');
+                const success = document.getElementById('confirmationSuccess');
+                form.reset();
+                form.classList.add('hidden');
+                success.classList.add('show');
+                success.focus();
             } else {
                 showToast('❌ Erro ao enviar. Tente novamente.', true);
             }
+        });
+
+        document.getElementById('newConfirmationButton').addEventListener('click', () => {
+            document.getElementById('confirmationSuccess').classList.remove('show');
+            document.getElementById('rsvpForm').classList.remove('hidden');
+            document.getElementById('nome').focus();
         });
     </script>
 </body>
